@@ -1,0 +1,29 @@
+.header {
+    display: flex;
+    background-color: var(--color-dark);
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 3rem;
+    border: 1px solid red;
+}
+
+.header__nav {
+}
+
+.nav__list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+}
+
+.nav__list-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav__list-item a {
+    font-size: inherit;
+    color: inherit;
+    text-decoration: none;
+}

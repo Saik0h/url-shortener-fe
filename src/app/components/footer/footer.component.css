@@ -1,0 +1,37 @@
+.footer {
+    background-color: var(--color-dark);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.25rem;
+}
+
+.footer__nav {}
+
+.nav__list {}
+
+.nav__list-item {}
+
+.copy {}
+
+.button_that_does_nothing {
+    border: 1px solid #111;
+    color: var(--color-light);
+    background-color: var(--color-dark);
+    padding: 8px;
+    border-radius: 24px;
+    transition: 0.3s;
+}
+
+.button_that_does_nothing:hover{
+    cursor: pointer;
+    background-color: #111;
+    border-color: var(--color-bg);
+}
+
+.button_that_does_nothing:focus{
+    background-color: #111;
+    border-color: var(--color-bg);
+}
+
