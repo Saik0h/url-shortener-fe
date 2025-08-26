@@ -5,44 +5,73 @@ import { shortenURL } from "../../services/url/url.api";
 
 export function Home() {
   const [reqBody, setReqBody] = useState<iUrl>({ url: "" });
-  const [display, setDisplay] = useState<string>("Your URL will appear here");
+  const [display, setDisplay] = useState<string>("Your shortened URL will appear here");
   const [loading, setLoading] = useState<boolean>(false);
 
-  function handleInput(event: ChangeEvent) {
-    const input = event.target as HTMLInputElement;
-    const value = input.value;
-
-    setReqBody({ url: value });
+  function handleInput(event: ChangeEvent<HTMLInputElement>) {
+    setReqBody({ url: event.target.value });
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setLoading(true);
 
-    const response = await shortenURL(reqBody);
-    setDisplay(response.data);
-    setLoading(false);
+    try {
+      const response = await shortenURL(reqBody);
+      setDisplay(response.data);
+    } catch (err) {
+      setDisplay("Error: could not shorten this URL");
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleCopy() {
-    navigator.clipboard.writeText(display);
+    if (!display || display.startsWith("Your")) return;
+    await navigator.clipboard.writeText(display);
   }
 
   return (
-    <section>
-      <h2>Shorten</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="url">insert url</label>
-        <input onChange={handleInput} type="url" id="url" />
-        <button type="button" onClick={handleCopy} disabled={loading}>
-          {loading ? "Loading" : "Copy"}
-        </button>
+    <section className="home">
+      <h2 className="home__title">Shorten your URL</h2>
 
-        <span>
-          <p>{display}</p>
-        </span>
-        <button>Shorten!</button>
+      <form className="home__form" onSubmit={handleSubmit}>
+        <label htmlFor="url" className="home__label">
+          Insert URL
+        </label>
+        <input
+          id="url"
+          type="url"
+          className="home__input"
+          value={reqBody.url}
+          onChange={handleInput}
+          placeholder="https://example.com"
+          required
+        />
+
+        <div className="home__buttons">
+          <button
+            type="submit"
+            className="home__button home__button--primary"
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Shorten!"}
+          </button>
+
+          <button
+            type="button"
+            className="home__button home__button--secondary"
+            onClick={handleCopy}
+            disabled={loading || display.startsWith("Your")}
+          >
+            Copy
+          </button>
+        </div>
       </form>
+
+      <div className="home__result">
+        <p>{display}</p>
+      </div>
     </section>
   );
 }

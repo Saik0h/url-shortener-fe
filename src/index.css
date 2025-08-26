@@ -1,5 +1,44 @@
-*, *::after, *::before{
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+:root {
+  /* === Base clara === */
+  --color-bg: hsl(210, 17%, 96%);
+  --color-panel: hsl(0, 0%, 100%);
+  --color-line: hsl(220, 14%, 91%);
+  --color-text: hsl(220, 15%, 6%);
+  --color-muted: hsl(220, 9%, 46%);
+
+  /* === Acentos === */
+  --color-accent: hsl(217, 91%, 60%);
+  --color-accent-hover: hsl(217, 92%, 48%);
+  --color-success: hsl(142, 72%, 35%);
+  --color-warning: hsl(32, 77%, 44%);
+  --color-error: hsl(0, 72%, 50%);
+
+  /* === Extras === */
+  --color-accent-alt: hsl(275, 80%, 60%); /* opcional: roxo */
+  --radius: 16px;
+  --shadow: 0 1px 2px rgba(17, 19, 23, 0.06),
+            0 8px 24px rgba(17, 19, 23, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* === Base escura === */
+    --color-bg: hsl(220, 21%, 5%);
+    --color-panel: hsl(217, 15%, 8%);
+    --color-line: hsl(217, 14%, 15%);
+    --color-text: hsl(220, 14%, 93%);
+    --color-muted: hsl(220, 9%, 60%);
+
+    /* === Acentos (ajustados pra contraste) === */
+    --color-accent: hsl(217, 91%, 65%);
+    --color-accent-hover: hsl(217, 92%, 55%);
+    --color-success: hsl(142, 72%, 40%);
+    --color-warning: hsl(32, 77%, 52%);
+    --color-error: hsl(0, 72%, 55%);
+
+    /* === Extras === */
+    --color-accent-alt: hsl(275, 80%, 65%);
+    --shadow: 0 2px 4px rgba(0, 0, 0, 0.6),
+              0 8px 20px rgba(0, 0, 0, 0.4);
+  }
 }
