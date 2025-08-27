@@ -1,45 +1,68 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import type { iLogin } from "../../services/auth/interfaces";
-import { login } from "../../services/auth/auth.api";
-import { redirect } from "react-router";
-
+import type { iLogin } from "../../services/interfaces";
+import "./login.page.css";
+import { useAuth } from "../../context/useAuth";
 export function Login() {
-  const [formValues, setFormValues] = useState({
+  const { state, loginUser, fetchCurrentUser } = useAuth();
+  const [formValues, setFormValues] = useState<iLogin>({
     email: "",
     password: "",
   });
 
-  function handleInput(e: ChangeEvent) {
-    const input = e.target as HTMLInputElement;
-    const value = input.value;
-    setFormValues({
-      ...formValues,
-      [input.name]: value,
-    });
+  function handleInput(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setFormValues((prev) => ({ ...prev, [name]: value }));
   }
 
-  async function handleSubmit(e: FormEvent){
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const data = formValues as iLogin;
-    await login(data);
-    redirect('/profile', 300)
+    await loginUser(formValues);
+    await fetchCurrentUser();
   }
-
   return (
-    <section>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">E-mail</label>
-        <input onChange={handleInput} type="email" id="email" name="email" />
-        <label htmlFor="password">Password</label>
+    <section className="login">
+      <h2 className="login__title">Login</h2>
+
+      <form className="login__form" onSubmit={handleSubmit}>
+        <label htmlFor="email" className="login__label">
+          E-mail
+        </label>
         <input
+          id="email"
+          name="email"
+          type="email"
+          value={formValues.email}
           onChange={handleInput}
-          type="password"
-          id="password"
-          name="password"
+          className="login__input"
+          placeholder="you@example.com"
+          required
         />
 
-        <button>Login!</button>
+        <label htmlFor="password" className="login__label">
+          Password
+        </label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          value={formValues.password}
+          onChange={handleInput}
+          className="login__input"
+          placeholder="Your password"
+          required
+        />
+
+        <button
+          className="login__button"
+          type="submit"
+          disabled={state.loading}
+        >
+          {state.loading ? "Logging in..." : "Login"}
+        </button>
       </form>
+      {state.message && (
+        <small className="login__message">{state.message}</small>
+      )}
     </section>
   );
 }

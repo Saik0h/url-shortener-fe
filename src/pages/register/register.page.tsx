@@ -1,56 +1,97 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import type { iRegister } from "../../services/auth/interfaces";
-import { register } from "../../services/auth/auth.api";
+import type { iRegister } from "../../services/interfaces";
+import "./register.page.css";
+import { useAuth } from "../../context/useAuth";
 
 export function Register() {
-  const [formValues, setFormValues] = useState({
+  const { state, registerUser, fetchCurrentUser } = useAuth();
+  const [formValues, setFormValues] = useState<iRegister>({
     email: "",
     username: "",
     name: "",
     password: "",
   });
 
-  function handleInput(e: ChangeEvent) {
-    const input = e.target as HTMLInputElement;
-    const value = input.value;
-
-    setFormValues({
-      ...formValues,
-      [input.name]: value,
-    });
-    console.log(formValues);
+  function handleInput(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setFormValues((prev) => ({ ...prev, [name]: value }));
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const data = formValues as iRegister;
-    await register(data);
+    await registerUser(formValues);
+    await fetchCurrentUser();
   }
 
   return (
-    <section>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">E-mail</label>
-        <input name="email" type="email" id="email" onChange={handleInput} />
-        <label htmlFor="password">Password</label>
+    <section className="register">
+      <h2 className="register__title">Register</h2>
+
+      <form className="register__form" onSubmit={handleSubmit}>
+        <label htmlFor="email" className="register__label">
+          E-mail
+        </label>
         <input
+          id="email"
+          name="email"
+          type="email"
+          value={formValues.email}
+          onChange={handleInput}
+          placeholder="you@example.com"
+          className="register__input"
+          required
+        />
+
+        <label htmlFor="password" className="register__label">
+          Password
+        </label>
+        <input
+          id="password"
           name="password"
           type="password"
-          id="password"
+          value={formValues.password}
           onChange={handleInput}
+          placeholder="Your password"
+          className="register__input"
+          required
         />
-        <label htmlFor="username">Username</label>
+
+        <label htmlFor="username" className="register__label">
+          Username
+        </label>
         <input
+          id="username"
           name="username"
           type="text"
-          id="Username"
+          value={formValues.username}
           onChange={handleInput}
+          placeholder="Your username"
+          className="register__input"
+          required
         />
-        <label htmlFor="name">Full Name</label>
-        <input name="name" type="text" id="name" onChange={handleInput} />
 
-        <button>Register!</button>
+        <label htmlFor="name" className="register__label">
+          Full Name
+        </label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          value={formValues.name}
+          onChange={handleInput}
+          placeholder="Your full name"
+          className="register__input"
+          required
+        />
+
+        <button className="register__button" type="submit" disabled={state.loading}>
+          {state.loading ? "Registering..." : "Register"}
+        </button>
       </form>
+
+      {state.message && (
+        <small className="register__message">{state.message}</small>
+      )}
     </section>
   );
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { iUrl } from "../auth/interfaces";
+import type { iUrl } from './interfaces'
 
 const baseUrl = "http://localhost:3000";
 

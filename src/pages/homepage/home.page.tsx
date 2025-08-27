@@ -1,12 +1,13 @@
 import "./home.page.css";
-import type { iUrl } from "../../services/auth/interfaces";
+import type { iUrl } from "../../services/interfaces";
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { shortenURL } from "../../services/url/url.api";
+import { shortenURL } from "../../services/url.api";
 
 export function Home() {
   const [reqBody, setReqBody] = useState<iUrl>({ url: "" });
-  const [display, setDisplay] = useState<string>("Your shortened URL will appear here");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [urlDisplay, setUrlDisplay] = useState("Your shortened URL will appear here");
+  const [copyDisplay, setCopyDisplay] = useState("Copy");
+  const [loading, setLoading] = useState(false);
 
   function handleInput(event: ChangeEvent<HTMLInputElement>) {
     setReqBody({ url: event.target.value });
@@ -18,17 +19,19 @@ export function Home() {
 
     try {
       const response = await shortenURL(reqBody);
-      setDisplay(response.data);
+      setUrlDisplay(response.data);
     } catch (err) {
-      setDisplay("Error: could not shorten this URL");
+      setUrlDisplay("Error: could not shorten this URL");
     } finally {
       setLoading(false);
     }
   }
 
   async function handleCopy() {
-    if (!display || display.startsWith("Your")) return;
-    await navigator.clipboard.writeText(display);
+    if (!urlDisplay || urlDisplay.startsWith("Your")) return;
+    await navigator.clipboard.writeText(urlDisplay);
+    setCopyDisplay("✔");
+    setTimeout(() => setCopyDisplay("Copy"), 2000);
   }
 
   return (
@@ -57,20 +60,22 @@ export function Home() {
           >
             {loading ? "Loading..." : "Shorten!"}
           </button>
-
-          <button
-            type="button"
-            className="home__button home__button--secondary"
-            onClick={handleCopy}
-            disabled={loading || display.startsWith("Your")}
-          >
-            Copy
-          </button>
         </div>
       </form>
 
-      <div className="home__result">
-        <p>{display}</p>
+      <div className="result__wrapper">
+        <div className="home__result">
+          <p>{urlDisplay}</p>
+        </div>
+
+        <button
+          type="button"
+          className="home__button home__button--secondary"
+          onClick={handleCopy}
+          disabled={loading || urlDisplay.startsWith("Your") || copyDisplay !== "Copy"}
+        >
+          {copyDisplay}
+        </button>
       </div>
     </section>
   );

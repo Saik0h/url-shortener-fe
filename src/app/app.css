@@ -18,18 +18,32 @@ body {
 }
 
 body {
-  display: flex;
+  min-height: 100dvh; display: flex;
   flex-direction: column;
-  min-height: 100dvh;
 }
 
 body > * {
   width: 100%;
   margin: 0 auto;
-  flex: 1; 
+  justify-content: space-between;
 }
 
-h1, h2, h3, h4, h5, h6 {
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh; 
+}
+
+.main-content{
+  flex: 1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
   line-height: 1.2;
   color: var(--color-light);
