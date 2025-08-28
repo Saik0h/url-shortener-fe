@@ -28,7 +28,7 @@ type AuthContextType = {
   state: AuthState;
   loginUser: (data: iLogin) => Promise<void>;
   registerUser: (data: iRegister) => Promise<void>;
-  fetchCurrentUser: () => Promise<void>;
+  getCurrent: () => Promise<void>;
   fetchUserUrls: () => Promise<void>;
   logoutUser: () => void;
 };
@@ -66,11 +66,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function loginUser(data: iLogin) {
     dispatch({ type: "SET_LOADING", payload: true });
     try {
-      const res = await login(data); // só retorna mensagem
+      const res = await login(data);
+
+      await getCurrent()
       dispatch({ type: "SET_MESSAGE", payload: res.message });
     } catch (err: any) {
       dispatch({ type: "SET_MESSAGE", payload: err.message || "Login failed" });
     } finally {
+      navigate("/profile");
       dispatch({ type: "SET_LOADING", payload: false });
     }
   }
@@ -78,7 +81,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function registerUser(data: iRegister) {
     dispatch({ type: "SET_LOADING", payload: true });
     try {
-      const res = await register(data); // só retorna mensagem
+      const res = await register(data);
+      console.log(res)
+      navigate("/profile");
       dispatch({ type: "SET_MESSAGE", payload: res.message });
     } catch (err: any) {
       dispatch({
@@ -90,11 +95,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  async function fetchCurrentUser() {
+  async function getCurrent() {
     dispatch({ type: "SET_LOADING", payload: true });
     try {
       const user = await getCurrentUser();
-      navigate("/profile");
       dispatch({ type: "SET_USER", payload: user.data });
     } catch {
       dispatch({ type: "SET_USER", payload: null });
@@ -108,7 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const urls = await getUserUrls();
       dispatch({ type: "SET_URLS", payload: urls.data });
-    } catch(err: any) {
+    } catch (err: any) {
       dispatch({ type: "SET_MESSAGE", payload: err.message });
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
@@ -128,7 +132,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    fetchCurrentUser();
+    getCurrent();
   }, []);
 
   return (
@@ -137,7 +141,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         state,
         loginUser,
         registerUser,
-        fetchCurrentUser,
+        getCurrent,
         logoutUser,
         fetchUserUrls,
       }}

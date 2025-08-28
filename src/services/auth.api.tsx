@@ -12,11 +12,16 @@ export async function login(dto: iLogin): Promise<iMessage> {
 export async function register(dto: iRegister): Promise<iMessage> {
   const data = { ...dto };
   const url = baseUrl + "/register";
-  return await axios.post(url, data, { withCredentials: true });
+  const res = await axios.post<iMessage>(url, data, { withCredentials: true });
+  console.log(res);
+  return res as any as iMessage
 }
 
 export async function getCurrentUser(): Promise<{ data: iUser }> {
-  return await axios.get(baseUrl, { withCredentials: true });
+  const url = "http://localhost:3000/users/current"
+  const user = await axios.get(url, { withCredentials: true })
+  console.log("Usuário:", user.data.name, "URLS:", user.data.urls)
+  return user;
 }
 
 export async function logout(): Promise<iMessage> {

@@ -4,7 +4,7 @@ import "./register.page.css";
 import { useAuth } from "../../context/useAuth";
 
 export function Register() {
-  const { state, registerUser, fetchCurrentUser } = useAuth();
+  const { state, registerUser } = useAuth();
   const [formValues, setFormValues] = useState<iRegister>({
     email: "",
     username: "",
@@ -20,7 +20,6 @@ export function Register() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     await registerUser(formValues);
-    await fetchCurrentUser();
   }
 
   return (

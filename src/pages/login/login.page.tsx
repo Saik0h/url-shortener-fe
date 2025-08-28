@@ -3,7 +3,7 @@ import type { iLogin } from "../../services/interfaces";
 import "./login.page.css";
 import { useAuth } from "../../context/useAuth";
 export function Login() {
-  const { state, loginUser, fetchCurrentUser } = useAuth();
+  const { state, loginUser } = useAuth();
   const [formValues, setFormValues] = useState<iLogin>({
     email: "",
     password: "",
@@ -17,7 +17,6 @@ export function Login() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     await loginUser(formValues);
-    await fetchCurrentUser();
   }
   return (
     <section className="login">
