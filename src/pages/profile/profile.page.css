@@ -1,0 +1,69 @@
+.wrap {
+  color: var(--color-light, #fff);
+  padding: 2rem;
+}
+
+h2 {
+  margin-bottom: 1rem;
+}
+
+.profile-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-dark, #1a1a1a);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.profile-table th,
+.profile-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.profile-table thead {
+  background: var(--color-accent, #f39c12);
+  color: #000;
+}
+
+.profile-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.url-id {
+  font-size: 0.85rem;
+  color: var(--color-secondary, #aaa);
+}
+
+.url-original {
+  font-weight: 500;
+}
+
+.btn {
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  margin-right: 0.4rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.2s ease;
+}
+
+.btn.small {
+  background: var(--color-accent, #f39c12);
+  color: #000;
+}
+
+.btn.small:hover {
+  background: hsl(35, 100%, 45%);
+}
+
+.btn.danger {
+  background: var(--color-red, #e74c3c);
+  color: #fff;
+}
+
+.btn.danger:hover {
+  background: hsl(349, 86%, 38%);
+}

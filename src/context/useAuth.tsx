@@ -22,7 +22,7 @@ type AuthAction =
   | { type: "SET_USER"; payload: iUser | null }
   | { type: "SET_MESSAGE"; payload: string | null }
   | { type: "LOGOUT" }
-  | { type: "SET_URLS", payload: iUrl[] | null };
+  | { type: "SET_URLS"; payload: iUrl[] | null };
 
 type AuthContextType = {
   state: AuthState;
@@ -67,13 +67,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "SET_LOADING", payload: true });
     try {
       const res = await login(data);
-
-      await getCurrent()
+      await getCurrent();
       dispatch({ type: "SET_MESSAGE", payload: res.message });
     } catch (err: any) {
       dispatch({ type: "SET_MESSAGE", payload: err.message || "Login failed" });
     } finally {
-      navigate("/profile");
       dispatch({ type: "SET_LOADING", payload: false });
     }
   }
@@ -82,8 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "SET_LOADING", payload: true });
     try {
       const res = await register(data);
-      console.log(res)
-      navigate("/profile");
+      await getCurrent();
       dispatch({ type: "SET_MESSAGE", payload: res.message });
     } catch (err: any) {
       dispatch({

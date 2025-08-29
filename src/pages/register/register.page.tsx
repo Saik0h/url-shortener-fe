@@ -19,6 +19,7 @@ export function Register() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    console.log(formValues);
     await registerUser(formValues);
   }
 
@@ -83,7 +84,11 @@ export function Register() {
           required
         />
 
-        <button className="register__button" type="submit" disabled={state.loading}>
+        <button
+          className="register__button"
+          type="submit"
+          disabled={state.loading}
+        >
           {state.loading ? "Registering..." : "Register"}
         </button>
       </form>

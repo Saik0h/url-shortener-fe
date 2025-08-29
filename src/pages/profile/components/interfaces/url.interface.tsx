@@ -1,6 +1,9 @@
 import type { iUrlAccessData } from ".";
 
 export default interface iUrl {
-    url: string,
-    acesses: iUrlAccessData[]
+    id: string,
+    original: string,
+    accesses: iUrlAccessData[]
+    createdAt: string,
+    expiresAt: string
 }
