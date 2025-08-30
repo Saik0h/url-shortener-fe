@@ -8,7 +8,8 @@ import {
 import type { iUser, iLogin, iRegister, iUrl } from "../services/interfaces";
 import { login, register, getCurrentUser, logout } from "../services/auth.api";
 import { useNavigate } from "react-router-dom";
-import { getUserUrls } from "../services/user.api";
+import { del, shorten } from "../services/url.api";
+import { addToArray, deleteFromArray } from "./helpers";
 
 type AuthState = {
   user: iUser | null;
@@ -22,14 +23,17 @@ type AuthAction =
   | { type: "SET_USER"; payload: iUser | null }
   | { type: "SET_MESSAGE"; payload: string | null }
   | { type: "LOGOUT" }
-  | { type: "SET_URLS"; payload: iUrl[] | null };
+  | { type: "SET_URLS"; payload: iUrl[] | null }
+  | { type: "ADD_URL"; payload: iUrl }
+  | { type: "DELETE_URL"; payload: string };
 
 type AuthContextType = {
   state: AuthState;
   loginUser: (data: iLogin) => Promise<void>;
   registerUser: (data: iRegister) => Promise<void>;
   getCurrent: () => Promise<void>;
-  fetchUserUrls: () => Promise<void>;
+  shortenUrl: (url: string) => Promise<string>;
+  deleteUrl: (id: string) => Promise<void>;
   logoutUser: () => void;
 };
 
@@ -48,6 +52,10 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
       return { ...state, user: action.payload };
     case "SET_URLS":
       return { ...state, urls: action.payload };
+    case "ADD_URL":
+      return { ...state, urls: addToArray(state.urls, action.payload) };
+    case "DELETE_URL":
+      return { ...state, urls: deleteFromArray(state.urls!, action.payload) };
     case "SET_MESSAGE":
       return { ...state, message: action.payload };
     case "LOGOUT":
@@ -92,6 +100,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  async function shortenUrl(url: string): Promise<string> {
+    dispatch({ type: "SET_LOADING", payload: true });
+    let shortened!: string;
+    try {
+      const u = await shorten(url);
+      shortened = u.shortened;
+      dispatch({ type: "ADD_URL", payload: u.url });
+    } catch (err: any) {
+      dispatch({ type: "SET_MESSAGE", payload: err.message });
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false });
+    }
+    return shortened;
+  }
+
+  async function deleteUrl(id: string): Promise<void> {
+    dispatch({ type: "SET_LOADING", payload: true });
+    try {
+      await del(id);
+      dispatch({ type: "DELETE_URL", payload: id });
+    } catch (err: any) {
+      dispatch({ type: "SET_MESSAGE", payload: err.message });
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false });
+    }
+  }
+
   async function getCurrent() {
     dispatch({ type: "SET_LOADING", payload: true });
     try {
@@ -99,18 +134,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       dispatch({ type: "SET_USER", payload: user.data });
     } catch {
       dispatch({ type: "SET_USER", payload: null });
-    } finally {
-      dispatch({ type: "SET_LOADING", payload: false });
-    }
-  }
-
-  async function fetchUserUrls() {
-    dispatch({ type: "SET_LOADING", payload: true });
-    try {
-      const urls = await getUserUrls();
-      dispatch({ type: "SET_URLS", payload: urls.data });
-    } catch (err: any) {
-      dispatch({ type: "SET_MESSAGE", payload: err.message });
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
     }
@@ -140,7 +163,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         registerUser,
         getCurrent,
         logoutUser,
-        fetchUserUrls,
+        deleteUrl,
+        shortenUrl,
       }}
     >
       {children}

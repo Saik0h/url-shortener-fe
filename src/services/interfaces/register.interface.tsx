@@ -1,4 +1,4 @@
-export interface iRegister {
+export default interface iRegister {
   email: string;
   name: string;
   username: string;

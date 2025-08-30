@@ -1,0 +1,56 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Tamanhos */
+.sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.md {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.xl {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}
+
+/* Cores / Estados */
+.default {
+  background-color: hsl(204, 86%, 6%);
+  color: hsl(60, 100%, 97%);
+}
+
+.danger {
+  background-color: hsl(349, 86%, 48%);
+  color: white;
+}
+
+.info {
+  background-color: hsl(35, 100%, 55%);
+  color: hsl(60, 100%, 97%);
+}
+
+.success {
+  background-color: hsl(120, 60%, 45%);
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}

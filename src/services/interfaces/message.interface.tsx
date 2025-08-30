@@ -1,3 +1,3 @@
-export interface iMessage {
+export default interface iMessage {
   message: string;
 }

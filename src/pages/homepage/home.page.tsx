@@ -1,16 +1,19 @@
 import "./home.page.css";
-import type { iUrl } from "../../services/interfaces";
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { shortenURL } from "../../services/url.api";
+import { useAuth } from "../../context/useAuth";
 
 export function Home() {
-  const [reqBody, setReqBody] = useState<iUrl>({ url: "" });
-  const [urlDisplay, setUrlDisplay] = useState("Your shortened URL will appear here");
+  const { shortenUrl } = useAuth();
+  const [payload, setPayload] = useState<string>("");
+  const [urlDisplay, setUrlDisplay] = useState(
+    "Your shortened URL will appear here"
+  );
   const [copyDisplay, setCopyDisplay] = useState("Copy");
   const [loading, setLoading] = useState(false);
 
   function handleInput(event: ChangeEvent<HTMLInputElement>) {
-    setReqBody({ url: event.target.value });
+    const value = event.target.value;
+    setPayload(value);
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -18,8 +21,8 @@ export function Home() {
     setLoading(true);
 
     try {
-      const response = await shortenURL(reqBody);
-      setUrlDisplay(response.data);
+      const response = await shortenUrl(payload);
+      setUrlDisplay(response);
     } catch (err) {
       setUrlDisplay("Error: could not shorten this URL");
     } finally {
@@ -46,7 +49,7 @@ export function Home() {
           id="url"
           type="url"
           className="home__input"
-          value={reqBody.url}
+          value={payload}
           onChange={handleInput}
           placeholder="https://example.com"
           required
@@ -72,7 +75,9 @@ export function Home() {
           type="button"
           className="home__button home__button--secondary"
           onClick={handleCopy}
-          disabled={loading || urlDisplay.startsWith("Your") || copyDisplay !== "Copy"}
+          disabled={
+            loading || urlDisplay.startsWith("Your") || copyDisplay !== "Copy"
+          }
         >
           {copyDisplay}
         </button>

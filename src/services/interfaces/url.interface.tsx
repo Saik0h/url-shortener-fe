@@ -1,5 +1,7 @@
-
 export default interface iUrl {
-    url: string
-    acesses: { when: string }[]
+  id: string;
+  original: string;
+  createdAt: string;
+  expiresAt: Date;
+  accessCount: { when: string }[];
 }

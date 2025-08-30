@@ -1,6 +1,6 @@
 import type { iUrl } from "../../pages/profile/components/interfaces";
 
-export interface iUser {
+export default interface iUser {
   username: string;
   name: string;
   email: string;

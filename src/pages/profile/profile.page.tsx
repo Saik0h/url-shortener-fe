@@ -1,9 +1,9 @@
 import "./profile.page.css";
 import { useAuth } from "../../context/useAuth";
-import { deleteUrl } from "../../services/url.api";
+import { Button } from "./components";
 
 export function Profile() {
-  const { state } = useAuth();
+  const { state, deleteUrl } = useAuth();
   if (state.loading) return <div>Loading...</div>;
 
   async function handleCopy(target: string) {
@@ -45,18 +45,20 @@ export function Profile() {
                       : "—"}
                   </td>
                   <td>
-                    <button
-                      className="btn small"
+                    <Button
                       onClick={() => handleCopy(u.id)}
-                    >
-                      Copy
-                    </button>
-                    <button
-                      className="btn small danger"
+                      text="Copy"
+                      variant="default"
+                      size="sm"
+                      key={u.original}
+                    />
+                    <Button
+                      text="delete"
+                      size="sm"
+                      variant="danger"
                       onClick={() => handleDelete(u.id)}
-                    >
-                      Delete
-                    </button>
+                      key={u.id}
+                    />
                   </td>
                 </tr>
               );
