@@ -102,17 +102,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function shortenUrl(url: string): Promise<string> {
     dispatch({ type: "SET_LOADING", payload: true });
-    let shortened!: string;
     try {
       const u = await shorten(url);
-      shortened = u.shortened;
-      dispatch({ type: "ADD_URL", payload: u.url });
+
+      dispatch({ type: "ADD_URL", payload: u.data.url });
+      return u.data.shortened;
     } catch (err: any) {
       dispatch({ type: "SET_MESSAGE", payload: err.message });
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
     }
-    return shortened;
+    return "no response";
   }
 
   async function deleteUrl(id: string): Promise<void> {

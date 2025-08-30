@@ -22,6 +22,7 @@ export function Home() {
 
     try {
       const response = await shortenUrl(payload);
+      console.log(response)
       setUrlDisplay(response);
     } catch (err) {
       setUrlDisplay("Error: could not shorten this URL");

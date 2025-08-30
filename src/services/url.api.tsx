@@ -3,7 +3,7 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:3000";
 
-export async function shorten(url: string): Promise<iUrlResponse> {
+export async function shorten(url: string): Promise<{ data: iUrlResponse }> {
   const path = baseUrl + "/u";
   return await axios.post(path, { url }, { withCredentials: true });
 }
