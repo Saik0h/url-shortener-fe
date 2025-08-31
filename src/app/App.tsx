@@ -20,7 +20,7 @@ export default function App() {
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
             </Route>
-            <Route path="*/*" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </AuthProvider>

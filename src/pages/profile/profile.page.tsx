@@ -1,6 +1,6 @@
 import "./profile.page.css";
 import { useAuth } from "../../context/useAuth";
-import { Button } from "./components";
+import { Button } from "../../components";
 
 export function Profile() {
   const { state, deleteUrl } = useAuth();
@@ -38,10 +38,10 @@ export function Profile() {
                     <div className="url-id">{u.id}</div>
                     <div className="url-original">{u.original}</div>
                   </td>
-                  <td>{u.accesses?.length ?? 0}</td>
+                  <td>{u.accessCount?.length ?? 0}</td>
                   <td>
-                    {u.accesses?.[0]?.when
-                      ? new Date(u.accesses?.[0].when).toLocaleString()
+                    {u.accessCount?.[0]?.when
+                      ? new Date(u.accessCount?.[0].when).toLocaleString()
                       : "—"}
                   </td>
                   <td>

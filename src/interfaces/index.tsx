@@ -4,3 +4,6 @@ export type { default as iUser } from "./user.interface";
 export type { default as iUrl } from "./url.interface";
 export type { default as iUrlResponse } from "./url-response.interface";
 export type { default as iMessage } from "./message.interface";
+export type { default as iButtonProps } from "./button-props.interface";
+export type { default as iUrlAccessData } from "./url-data.interface";
+export type { default as iDashboardProps } from "./dashboard-props.interface";

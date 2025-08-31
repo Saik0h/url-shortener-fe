@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import type { iRegister } from "../../services/interfaces";
+import type { iRegister } from "../../interfaces";
 import "./register.page.css";
 import { useAuth } from "../../context/useAuth";
 
@@ -19,7 +19,6 @@ export function Register() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    console.log(formValues);
     await registerUser(formValues);
   }
 
@@ -39,6 +38,7 @@ export function Register() {
           onChange={handleInput}
           placeholder="you@example.com"
           className="register__input"
+          autoComplete="email"
           required
         />
 
@@ -53,6 +53,7 @@ export function Register() {
           onChange={handleInput}
           placeholder="Your password"
           className="register__input"
+          autoComplete="new-password"
           required
         />
 
@@ -67,6 +68,7 @@ export function Register() {
           onChange={handleInput}
           placeholder="Your username"
           className="register__input"
+          autoComplete="username"
           required
         />
 
@@ -81,6 +83,7 @@ export function Register() {
           onChange={handleInput}
           placeholder="Your full name"
           className="register__input"
+          autoComplete="name"
           required
         />
 

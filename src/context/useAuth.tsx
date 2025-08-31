@@ -5,15 +5,14 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
-import type { iUser, iLogin, iRegister, iUrl } from "../services/interfaces";
-import { login, register, getCurrentUser, logout } from "../services/auth.api";
+import type { iUser, iLogin, iRegister, iUrl } from "../interfaces";
+import { login, register, getCurrentUser, logout } from "../api/auth.api";
 import { useNavigate } from "react-router-dom";
-import { del, shorten } from "../services/url.api";
+import { del, shorten } from "../api/url.api";
 import { addToArray, deleteFromArray } from "./helpers";
 
 type AuthState = {
   user: iUser | null;
-  urls: iUrl[] | null;
   loading: boolean;
   message: string | null;
 };
@@ -39,7 +38,6 @@ type AuthContextType = {
 
 const initialState: AuthState = {
   user: null,
-  urls: null,
   loading: false,
   message: null,
 };
@@ -50,16 +48,30 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
       return { ...state, loading: action.payload };
     case "SET_USER":
       return { ...state, user: action.payload };
-    case "SET_URLS":
-      return { ...state, urls: action.payload };
     case "ADD_URL":
-      return { ...state, urls: addToArray(state.urls, action.payload) };
+      return {
+        ...state,
+        user: state.user
+          ? {
+              ...state.user,
+              urls: addToArray(state.user.urls, action.payload),
+            }
+          : null,
+      };
     case "DELETE_URL":
-      return { ...state, urls: deleteFromArray(state.urls!, action.payload) };
+      return {
+        ...state,
+        user: state.user
+          ? {
+              ...state.user,
+              urls: deleteFromArray(state.user.urls, action.payload),
+            }
+          : null,
+      };
     case "SET_MESSAGE":
       return { ...state, message: action.payload };
     case "LOGOUT":
-      return { user: null, loading: false, message: null, urls: null };
+      return { user: null, loading: false, message: null };
     default:
       return state;
   }
@@ -102,17 +114,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function shortenUrl(url: string): Promise<string> {
     dispatch({ type: "SET_LOADING", payload: true });
+    let res!: string;
     try {
       const u = await shorten(url);
-
       dispatch({ type: "ADD_URL", payload: u.data.url });
-      return u.data.shortened;
+      res = u.data.shortened;
     } catch (err: any) {
       dispatch({ type: "SET_MESSAGE", payload: err.message });
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
     }
-    return "no response";
+    return res;
   }
 
   async function deleteUrl(id: string): Promise<void> {

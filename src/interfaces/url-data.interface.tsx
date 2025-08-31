@@ -1,3 +1,3 @@
 export default interface iUrlAccessData{
-    when: Date
+    when: string
 }

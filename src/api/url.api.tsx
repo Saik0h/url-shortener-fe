@@ -1,4 +1,4 @@
-import type { iMessage, iUrlResponse } from "./interfaces";
+import type { iMessage, iUrlResponse } from "../interfaces";
 import axios from "axios";
 
 const baseUrl = "http://localhost:3000";

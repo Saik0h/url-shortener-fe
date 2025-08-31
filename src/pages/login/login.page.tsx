@@ -1,7 +1,8 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import type { iLogin } from "../../services/interfaces";
+import type { iLogin } from "../../interfaces";
 import "./login.page.css";
 import { useAuth } from "../../context/useAuth";
+
 export function Login() {
   const { state, loginUser } = useAuth();
   const [formValues, setFormValues] = useState<iLogin>({
@@ -34,6 +35,7 @@ export function Login() {
           onChange={handleInput}
           className="login__input"
           placeholder="you@example.com"
+          autoComplete="email"
           required
         />
 
@@ -48,6 +50,7 @@ export function Login() {
           onChange={handleInput}
           className="login__input"
           placeholder="Your password"
+          autoComplete="current-password"
           required
         />
 

@@ -1,4 +1,4 @@
-import type { iUrl } from "../../pages/profile/components/interfaces";
+import type { iUrl } from ".";
 
 export default interface iUser {
   username: string;

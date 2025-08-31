@@ -1,4 +1,4 @@
-import type { iUrl } from "../../services/interfaces";
+import type { iUrl } from "../../interfaces";
 
 export function deleteFromArray(array: iUrl[] | null, id: string): Array<iUrl> {
   if (!array) return [];

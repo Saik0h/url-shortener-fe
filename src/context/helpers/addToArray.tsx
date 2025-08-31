@@ -1,6 +1,13 @@
-import type { iUrl } from "../../services/interfaces";
+import type { iUrl } from "../../interfaces";
 
 export function addToArray(array: iUrl[] | null, url: iUrl): Array<iUrl> {
-  if (!array) return [url];
-  return [...array, url];
+  if (array === null) {
+    const newArray = []
+    newArray.push(url)
+    return newArray;
+  } else {
+    const newArray = [...array];
+    newArray.push(url);
+    return newArray;
+  }
 }

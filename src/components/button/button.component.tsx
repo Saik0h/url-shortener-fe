@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type iButtonProps from "../interfaces/button-props.interface";
+import type { iButtonProps } from "../../interfaces";
 import type { btnClass } from "../../enums/button-class.enum";
 
 export default function Button(props: iButtonProps) {
