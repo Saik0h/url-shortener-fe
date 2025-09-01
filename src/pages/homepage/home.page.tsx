@@ -76,7 +76,7 @@ export function Home() {
           className="home__button home__button--secondary"
           onClick={handleCopy}
           disabled={
-            loading || urlDisplay.startsWith("Your") || copyDisplay !== "Copy"
+            loading || urlDisplay?.startsWith("Your") || copyDisplay !== "Copy"
           }
         >
           {copyDisplay}
